@@ -2057,6 +2057,9 @@ void LuaInterface::registerFunctions()
 
 	//doPlayerSetSex(cid, newSex)
 	lua_register(m_luaState, "doPlayerSetSex", LuaInterface::luaDoPlayerSetSex);
+	
+	//doPlayerCastSpell(cid, spell)
+	lua_register(m_luaState, "doPlayerCastSpell", LuaInterface::luaDoPlayerCastSpell);
 
 	//createCombatArea({area}[, {extArea}])
 	lua_register(m_luaState, "createCombatArea", LuaInterface::luaCreateCombatArea);
@@ -5720,6 +5723,29 @@ int32_t LuaInterface::luaDoPlayerSetSex(lua_State* L)
 		lua_pushboolean(L, false);
 	}
 
+	return 1;
+}
+
+int32_t LuaInterface::luaDoPlayerCastSpell(lua_State* L)
+{
+	//doPlayerCastSpell(cid, spell)
+	std::string spell = popString(L);
+
+	ScriptEnviroment* env = getEnv();
+	Player* player = env->getPlayerByUID(popNumber(L));
+	if(!player)
+	{
+		errorEx(getError(LUA_ERROR_PLAYER_NOT_FOUND));
+		lua_pushboolean(L, false);
+		return 1;
+	}
+
+	ReturnValue ret = RET_NOERROR;
+	ret = g_spells->onPlayerSay(player, spell);
+	if(ret == RET_NOERROR || (ret == RET_NEEDEXCHANGE && !g_config.getBool(ConfigManager::BUFFER_SPELL_FAILURE)))
+		return true;
+
+	lua_pushboolean(L, true);
 	return 1;
 }
 
