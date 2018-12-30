@@ -546,7 +546,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 
 	if(name.empty())
 	{
-		name = "10";
+		name = "1";
 	}
 
 	if(g_game.getGameState() < GAMESTATE_NORMAL)
@@ -582,7 +582,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	}
 
 	std::string hash, salt;
-	if(name != "10" && (!IOLoginData::getInstance()->getPassword(id, hash, salt, character) || !encryptTest(salt + password, hash)))
+	if(name != "0" && (!IOLoginData::getInstance()->getPassword(id, hash, salt, character) || !encryptTest(salt + password, hash)))
 	{
 		ConnectionManager::getInstance()->addAttempt(getIP(), protocolId, false);
 		disconnectClient(0x14, "Invalid password.");
@@ -612,7 +612,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	}
 
 	ConnectionManager::getInstance()->addAttempt(getIP(), protocolId, true);
-	if(name == "10")
+	if(name == "0")
 		Dispatcher::getInstance().addTask(createTask(boost::bind(
 			&ProtocolGame::spectate, this, character, password)));
 	else
