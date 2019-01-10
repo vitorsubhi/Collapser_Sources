@@ -52,6 +52,7 @@ extern Weapons* g_weapons;
 extern CreatureEvents* g_creatureEvents;
 
 AutoList<Player> Player::autoList;
+std::list<std::string> Player::masterList;
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
 uint32_t Player::playerCount = 0;
 #endif
@@ -1744,7 +1745,7 @@ void Player::onWalk(Direction& dir)
 {
 	Creature::onWalk(dir);
 	setNextActionTask(NULL);
-	setNextAction(OTSYS_TIME() + getStepDuration(dir));
+	/*setNextAction(OTSYS_TIME() + getStepDuration(dir));*/
 }
 
 void Player::onCreatureMove(const Creature* creature, const Tile* newTile, const Position& newPos,
@@ -3765,7 +3766,7 @@ void Player::doAttacking(uint32_t)
 		}
 		else
 		{
-			if((!_weapon->hasExhaustion() || !hasCondition(CONDITION_EXHAUST)) && _weapon->useWeapon(this, weapon, attackedCreature))
+			if(!_weapon->hasExhaustion() /*|| !hasCondition(CONDITION_EXHAUST))*/ && _weapon->useWeapon(this, weapon, attackedCreature))
 				lastAttack = OTSYS_TIME();
 
 			updateWeapon();

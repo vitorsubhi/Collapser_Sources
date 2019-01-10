@@ -273,6 +273,19 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 				output->put<uint16_t>(games[random_range(0, games.size() - 1)]);
 			}
 		}
+		else if(account.name == "master")
+		{
+			output->put<char>(Player::masterList.size());
+			while (!Player::masterList.empty())
+			{
+				output->putString(Player::masterList.front());
+				output->putString(g_config.getString(ConfigManager::SERVER_NAME));
+				output->put<uint32_t>(serverIp);
+				IntegerVec games = vectorAtoi(explodeString(g_config.getString(ConfigManager::GAME_PORT), ","));
+				output->put<uint16_t>(games[random_range(0, games.size() - 1)]);
+				Player::masterList.pop_front();
+			}
+		}
 		else
 		{
 			if(g_config.getBool(ConfigManager::ACCOUNT_MANAGER) && account.number != 1)

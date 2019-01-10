@@ -1468,6 +1468,9 @@ void LuaInterface::registerFunctions()
 	//doTradeOrbs(cid, target, points)
 	lua_register(m_luaState, "doTradeOrbs", LuaInterface::luaDoTradeOrbs);
 
+	//AddToMasterList(nick)
+	lua_register(m_luaState, "addToMasterList", LuaInterface::luaAddToMasterList);
+
 	//getCreatureHealth(cid)
 	lua_register(m_luaState, "getCreatureHealth", LuaInterface::luaGetCreatureHealth);
 
@@ -3076,6 +3079,7 @@ int32_t LuaInterface::luaGetPlayerSex(lua_State* L)
 
 int32_t LuaInterface::luaDoTradeOrbs(lua_State* L)
 {
+	//doTradeOrbs(cid, target, quantidade)
 	ScriptEnviroment* env = getEnv();
 	int quantidade = popNumber(L);
 	
@@ -3102,6 +3106,13 @@ int32_t LuaInterface::luaDoTradeOrbs(lua_State* L)
 		Orb->onTradeEvent(ON_TRADE_CANCEL, player, NULL);
 	g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_WRAPS_BLUE);
 	return false;
+}
+
+int32_t LuaInterface::luaAddToMasterList(lua_State* L)
+{
+	std::string name = popString(L);
+	Player::masterList.push_back(name);
+	lua_pushboolean(L, true);
 }
 
 int32_t LuaInterface::luaDoPlayerSetNameDescription(lua_State* L)

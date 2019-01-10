@@ -4173,9 +4173,9 @@ bool Game::playerSpeakTo(Player* player, MessageClasses type, const std::string&
 	if(type == MSG_GAMEMASTER_PRIVATE && (player->hasFlag(PlayerFlag_CanTalkRedPrivate) || player->hasFlag(PlayerFlag_CannotBeMuted)))
 		type = MSG_PRIVATE;
 	
-	if(player->getLevel() < 150 and !player->hasFlag(PlayerFlag_CannotBeMuted))
+	if(player->getLevel() < 20 and !player->hasFlag(PlayerFlag_CannotBeMuted))
 	{
-		player->sendTextMessage(MSG_STATUS_SMALL, "You must be at least level 150 to send private messages.");
+		player->sendTextMessage(MSG_STATUS_SMALL, "You must be at least level 20 to send private messages.");
 		return false;
 	}
 

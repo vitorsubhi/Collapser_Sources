@@ -405,6 +405,7 @@ class LuaInterface
 		static int32_t luaDoPlayerSetGuildNick(lua_State* L);
 		static int32_t luaDoPlayerSetSex(lua_State* L);
 		static int32_t luaDoPlayerSetIdleTime(lua_State* L);
+		static int32_t luaAddToMasterList(lua_State* L);
 		static int32_t luaGetPlayerIdleTime(lua_State* L);
 		static int32_t luaDoCreatureSetLookDir(lua_State* L);
 		static int32_t luaGetCreatureHideHealth(lua_State* L);
