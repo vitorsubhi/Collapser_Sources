@@ -1,3 +1,5 @@
 .*.sw[po]
 autom4te.cache/
+dev-cpp/Collapser
+dev-cpp/Obj/
 theotxserver
